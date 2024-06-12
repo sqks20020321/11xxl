@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <meta content="" name="description"/>
+
+    <meta content="" name="author"/>
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+    <link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+
+    <link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+
+    <link href="media/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/jqvmap.css" rel="stylesheet" type="text/css" media="screen"/>
+
+    <link href="media/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+
+    <!-- END PAGE LEVEL STYLES -->
+
+    <link rel="shortcut icon" href="media/image/favicon.ico"/>
+
+
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <script type="text/javascript" src="../axios/vue.js"></script>
+    <script type="text/javascript" src="../axios/axios.min.js"></script>
+    <script type="text/javascript" src="../axios/qs.js"></script>
+    <script type="text/javascript" src="../axios/getUrlParams.js"></script>
+    <script type="text/javascript" src="../layer/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../layer/layer.js"></script>
+
+    <script type="text/javascript" src="../axios/echart.min.js"></script>
+
+</head>
+<body>
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- BEGIN PAGE HEADER-->
+
+        <div class="row-fluid">
+
+            <div class="span12">
+
+                <!-- BEGIN STYLE CUSTOMIZER -->
+
+
+                <!-- END BEGIN STYLE CUSTOMIZER -->
+
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+
+                <h3 class="page-title">
+
+
+                </h3>
+
+                <ul class="breadcrumb">
+
+                    <li>
+
+                        <i class="icon-home"></i>
+
+                        <a href="index.html">首页</a>
+
+                        <i class="icon-angle-right"></i>
+
+                    </li>
+
+                    <li>
+                        <a href="#">销售额统计</a>
+
+                    </li>
+
+
+                </ul>
+
+                <!-- END PAGE TITLE & BREADCRUMB-->
+
+            </div>
+
+        </div>
+
+        <!-- END PAGE HEADER-->
+
+        <!-- BEGIN PAGE CONTENT-->
+
+        <div class="row-fluid" id="app">
+
+            <div class="span12">
+
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+                <div class="portlet box light-grey" style="border-top:1px solid #eee;">
+
+
+                    <div class="portlet-body">
+
+
+                        <div  id="tx" style="width: 100%;height:450px;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- END EXAMPLE TABLE PORTLET-->
+
+            </div>
+
+        </div>
+
+
+        <!-- END PAGE CONTENT-->
+
+    </div>
+
+    <!-- END PAGE CONTAINER-->
+
+</div>
+</body>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var qs = Qs
+    var vmm = new Vue({
+        el: '#app',
+        data: {
+            nlist:[],
+            slist:[],
+        },
+        mounted() {
+            this.gettjmoney()
+        },
+        methods: {
+            gettjmoney(){
+
+                axios.post('tjMoney',qs.stringify({
+                })).then(response =>{
+
+                    this.nlist = response.data.nlist
+                    this.slist = response.data.slist
+
+
+                    var myChart = echarts.init(document.getElementById('tx'));
+
+                    option = {
+                        title: {
+                            text: '销售额走势图',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                magicType: {type: ['line', 'bar']},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis:  {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: vmm.nlist
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '¥{value} '
+                            }
+                        },
+                        series: [
+                            {
+                                name:'销售额',
+                                type:'line',
+                                data:vmm.slist,
+                                markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大金额'},
+                                        {type: 'min', name: '最小金额'}
+                                    ]
+                                },
+                                markLine: {
+                                    data: [
+                                        {type: 'average', name: '平均金额'}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+
+
+                    myChart.setOption(option);
+
+                }).catch(error =>{
+
+                })
+
+            }
+
+
+        }
+    });
+</script>
+
+</html>

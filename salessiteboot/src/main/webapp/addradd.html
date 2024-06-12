@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="layui/css/layui.css" rel="stylesheet">
+</head>
+<body>
+<div style="padding: 20px;" id="app">
+    <form class="layui-form" action="">
+
+
+        <div class="layui-form-item">
+                <input type="text" v-model="name" required  lay-verify="required" placeholder="收货人" autocomplete="off" class="layui-input">
+        </div>
+
+        <div class="layui-form-item">
+                <input type="text" v-model="tel" required  lay-verify="required" placeholder="联系电话" autocomplete="off" class="layui-input">
+        </div>
+
+        <div class="layui-form-item">
+                <input type="text" v-model="address" required  lay-verify="required" placeholder="收货地址" autocomplete="off" class="layui-input">
+        </div>
+
+        <div class="layui-form-item">
+                <a class="layui-btn" lay-submit lay-filter="formDemo" @click="add()">立即提交</a>
+        </div>
+    </form>
+</div>
+
+</body>
+<script type="text/javascript" src="layer/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+
+
+<script type="text/javascript" src="axios/vue.js"></script>
+<script type="text/javascript" src="axios/axios.min.js"></script>
+<script type="text/javascript" src="axios/qs.js"></script>
+<script type="text/javascript" src="axios/getUrlParams.js"></script>
+<script type="text/javascript">
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript">
+    var qs = Qs
+    var vmm = new Vue({
+        el: '#app',
+        data: {
+            name:"",
+            tel:"",
+            address:"",
+        },
+        methods: {
+            //创建订单
+            add(){
+                if(this.name==""){
+                    layer.msg("收货人不能为空",{icon:5})
+                    return false;
+                }
+                if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.tel)){
+                    layer.msg("电话输入错误",{icon:5})
+                    return false;
+                }
+                if(this.address==""){
+                    layer.msg("收货地址不能为空",{icon:5})
+                    return false;
+                }
+                axios.post('ordermsgAdd',qs.stringify({
+                    name:this.name,
+                    tel:this.tel,
+                    address:this.address,
+                })).then(response =>{
+                    layer.alert("创建订单成功",{icon:6},function(){
+                        parent.location.reload(true)
+                        parent.layer.closeAll()
+                    })
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<!-- Head BEGIN -->
+<head>
+  <meta charset="utf-8">
+  <title>声逸商城</title>
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <meta content="Metronic Shop UI description" name="description">
+  <meta content="Metronic Shop UI keywords" name="keywords">
+  <meta content="keenthemes" name="author">
+
+  <meta property="og:site_name" content="-CUSTOMER VALUE-">
+  <meta property="og:title" content="-CUSTOMER VALUE-">
+  <meta property="og:description" content="-CUSTOMER VALUE-">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="-CUSTOMER VALUE-"><!-- link to image for socio -->
+  <meta property="og:url" content="-CUSTOMER VALUE-">
+
+  <link rel="shortcut icon" href="favicon.ico">
+    <link href="layui/css/layui.css" rel="stylesheet">
+
+  <!-- Fonts START -->
+  <!-- Fonts END -->
+
+  <!-- Global styles START -->          
+  <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Global styles END --> 
+   
+  <!-- Page level plugin styles START -->
+  <link href="assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
+  <link href="assets/plugins/owl.carousel/assets/owl.carousel.css" rel="stylesheet">
+  <link href="assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+  <link href="assets/plugins/rateit/src/rateit.css" rel="stylesheet" type="text/css">
+  <!-- Page level plugin styles END -->
+
+  <!-- Theme styles START -->
+  <link href="assets/pages/css/components.css" rel="stylesheet">
+  <link href="assets/corporate/css/style.css" rel="stylesheet">
+  <link href="assets/pages/css/style-shop.css" rel="stylesheet" type="text/css">
+  <link href="assets/corporate/css/style-responsive.css" rel="stylesheet">
+  <link href="assets/corporate/css/themes/red.css" rel="stylesheet" id="style-color">
+  <link href="assets/corporate/css/custom.css" rel="stylesheet">
+  <!-- Theme styles END -->
+</head>
+<!-- Head END -->
+
+<!-- Body BEGIN -->
+<body class="ecommerce">
+    <!-- BEGIN STYLE CUSTOMIZER -->
+    <div class="color-panel hidden-sm">
+      <div class="color-mode-icons icon-color"></div>
+      <div class="color-mode-icons icon-color-close"></div>
+      <div class="color-mode">
+        <p>THEME COLOR</p>
+        <ul class="inline">
+          <li class="color-red current color-default" data-style="red"></li>
+          <li class="color-blue" data-style="blue"></li>
+          <li class="color-green" data-style="green"></li>
+          <li class="color-orange" data-style="orange"></li>
+          <li class="color-gray" data-style="gray"></li>
+          <li class="color-turquoise" data-style="turquoise"></li>
+        </ul>
+      </div>
+    </div>
+    <!-- END BEGIN STYLE CUSTOMIZER --> 
+
+    <!-- BEGIN TOP BAR -->
+    <div class="pre-header" id="loginiframe">
+    </div>
+    <!-- END TOP BAR -->
+
+    <!-- BEGIN HEADER -->
+    <div class="header">
+        <div class="container" id="headeriframe">
+            <!-- BEGIN CART -->
+            <!--END CART -->
+            <!-- BEGIN NAVIGATION -->
+            <!-- END NAVIGATION -->
+        </div>
+    </div>
+    <!-- Header END -->
+
+    <div class="main">
+      <div class="container" id="app">
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+            <h1>订单信息</h1>
+            <div class="goods-page" style="min-height: 500px;">
+              <div class="goods-data clearfix">
+                <div class="table-wrapper-responsive">
+
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>订单编号</th>
+                            <th>订单金额</th>
+                            <th>收货地址</th>
+                            <th>创建时间</th>
+                            <th>订单状态</th>
+                            <th>物流信息</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="order in orderlist">
+                            <td style="text-align: center"><a :href="['orderdetailslist.html?ddno='+order.ddno]">{{order.ddno}}</a></td>
+                            <td style="text-align: center">{{order.total}}</td>
+                            <td style="text-align: center" v-html="order.addr">{{order.addr}}</td>
+                            <td style="text-align: center">{{order.savetime}}</td>
+                            <td style="text-align: center">{{order.status}}</td>
+                            <td style="text-align: center" v-html="order.wlinfo">{{order.wlinfo}}</td>
+                            <td style="text-align: center">
+                                <button  v-if="order.status=='待收货'" @click="shouhuo(order.id)" type="button" class="layui-btn layui-btn-xs">确认收货</button>
+                                <button  v-if="order.status=='待付款'" @click="fukuan(order.id)" type="button" class="layui-btn layui-btn-xs">付款</button>
+                                <button  v-if="order.status=='待付款' || order.status=='交易完成'" @click="del(order.id)" type="button" class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="8"><div id="demo1" style="text-align:center"></div></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+        </div>
+        <!-- END SIDEBAR & CONTENT -->
+
+        <!-- BEGIN SIMILAR PRODUCTS -->
+
+        <!-- END SIMILAR PRODUCTS -->
+      </div>
+    </div>
+
+    <!-- BEGIN STEPS -->
+    <!-- END STEPS -->
+
+    <!-- BEGIN PRE-FOOTER -->
+    <!-- END PRE-FOOTER -->
+
+    <!-- BEGIN FOOTER -->
+    <div class="footer" id="footiframe">
+    </div>
+    <!-- END FOOTER -->
+
+    <!-- BEGIN fast view of a product -->
+
+    <!-- END fast view of a product -->
+
+    <!-- Load javascripts at bottom, this will reduce page load time -->
+    <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
+    <!--[if lt IE 9]>
+    <script src="assets/plugins/respond.min.js"></script>  
+    <![endif]-->  
+    <script src="assets/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
+    <script src="assets/corporate/scripts/back-to-top.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+    <script src="assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
+    <script src="assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
+    <script src='assets/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
+    <script src="assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
+    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
+
+    <script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+<script type="text/javascript" src="axios/vue.js"></script>
+<script type="text/javascript" src="axios/axios.min.js"></script>
+<script type="text/javascript" src="axios/qs.js"></script>
+<script type="text/javascript" src="axios/getUrlParams.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript">
+    var qs = Qs
+    var vmm = new Vue({
+        el: '#app',
+        data: {
+            orderlist:[],
+            pageSize:10,
+        },
+        mounted(){
+            this.getorderlist()
+        },
+        methods: {
+            shouhuo(id){
+                axios.post('shouhuo',qs.stringify({
+                    id:id,
+                })).then(response =>{
+                    this.getorderlist()
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+            fukuan(id){
+                var index = layer.open({
+                    title:"订单付款",
+                    type:2,
+                    area:['500px','400px'],
+                    maxmin:true,
+                    content:"fukuan.html?id="+id
+                })
+            },
+
+            getorderlist() {
+                axios.post('orderList',qs.stringify({
+                    key:this.key,
+                    pageSize:this.pageSize,
+                })).then(response =>{
+                    layui.use(['laypage', 'layer'], function(){
+                        var laypage = layui.laypage
+                            ,layer = layui.layer;
+                        //总页数大于页码总数
+                        laypage.render({
+                            elem: 'demo1'
+                            ,limit:vmm.pageSize
+                            ,count: response.data.list.length //数据总数
+                            ,jump: function(obj,first){
+                                vmm.current_page(obj.curr,vmm.pageSize)
+                                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            }
+                        });
+                    });
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+
+            current_page(page,pageSize){
+                axios.post('orderList',qs.stringify({
+                    key:this.key,
+                    pageNum:page,
+                    pageSize:pageSize,
+                })).then(response =>{
+                    this.orderlist = response.data.pageInfo.list
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+            del(id){
+                axios.post('admin/orderDel',qs.stringify({
+                    id:id,
+                })).then(response =>{
+                    this.getorderlist()
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    window.onload=function(){
+        $("#loginiframe").load("iframe/loginiframe.html")
+        $("#headeriframe").load("iframe/headeriframe.html")
+        $("#footiframe").load("iframe/footiframe.html")
+
+    }
+</script>
+</html>

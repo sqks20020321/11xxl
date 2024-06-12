@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="layui/css/layui.css" rel="stylesheet">
+
+</head>
+<body>
+<div style="padding: 20px;" id="app">
+    <form class="layui-form" >
+        <div class="layui-form-item">
+            <div style="display:flex;width: 100%;justify-content : space-around;">
+                <input type="text" v-model="minprice" required  lay-verify="required" placeholder="最小价格" autocomplete="off" class="layui-input">
+                <input type="text" v-model="maxprice" required  lay-verify="required" placeholder="最大价格" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+                <a class="layui-btn" lay-submit lay-filter="formDemo" @click="toproductmsg()">立即提交</a>
+        </div>
+    </form>
+</div>
+</body>
+
+<script type="text/javascript" src="axios/vue.js"></script>
+<script type="text/javascript" src="axios/axios.min.js"></script>
+<script type="text/javascript" src="axios/qs.js"></script>
+<script type="text/javascript" src="axios/getUrlParams.js"></script>
+<script type="text/javascript" src="layer/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript">
+    var qs = Qs
+    var vmm = new Vue({
+        el:"#app",
+        data:{
+            minprice: '',
+            maxprice: '',
+        },
+        methods:{
+            toproductmsg(){
+                parent.layer.closeAll()
+                parent.location.replace("productmsg.html?minprice="+this.minprice+"&maxprice="+this.maxprice)
+            },
+        }
+    })
+
+</script>
+
+</html>
